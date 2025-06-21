@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration - CNSS RDC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Styles de base */
+        body {
+            font-family: 'Poppins', sans-serif; /* Utilisation de la nouvelle police */
+            background-color: #f4f7f6;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header de l'admin */
+        .admin-header {
+            background: linear-gradient(135deg, #007FFF, #0066CC);
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .admin-logo {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .admin-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .admin-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .admin-logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .admin-logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Contenu principal */
+        .admin-main-content {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Section d'upload - AMÉLIORATIONS UI ICI */
+        .upload-section {
+            background-color: white;
+            padding: 40px; /* Augmentation du padding */
+            border-radius: 12px; /* Rayon de bordure plus grand */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Ombre plus prononcée */
+            width: 100%;
+            max-width: 650px; /* Largeur maximale augmentée */
+            text-align: center;
+            border: 1px solid #e0e0e0; /* Légère bordure */
+        }
+
+        .upload-section h2 {
+            color: #007FFF;
+            margin-bottom: 30px; /* Marge augmentée */
+            font-size: 28px; /* Taille de titre augmentée */
+            font-weight: 700; /* Plus gras */
+        }
+
+        .form-group {
+            margin-bottom: 25px; /* Espace entre les groupes */
+            text-align: left;
+            position: relative; /* Pour les icônes si ajoutées */
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px; /* Espace entre label et input */
+            color: #333;
+            font-weight: 600; /* Plus gras */
+            font-size: 15px;
+        }
+
+        .form-group input[type="text"],
+        .form-group select {
+            width: 100%;
+            padding: 14px 15px; /* Plus de padding */
+            border: 1px solid #d0d0d0;
+            border-radius: 8px; /* Coins plus arrondis */
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group select:focus {
+            border-color: #007FFF;
+            box-shadow: 0 0 0 3px rgba(0, 127, 255, 0.2); /* Effet de focus plus doux */
+            outline: none; /* Supprimer l'outline par défaut */
+        }
+
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 12px; /* Moins de padding car le style est plus complexe */
+            border: 1px dashed #007FFF; /* Bordure en pointillé */
+            border-radius: 8px;
+            background-color: #eaf6ff; /* Fond légèrement coloré */
+            cursor: pointer;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .form-group input[type="file"]::-webkit-file-upload-button {
+            visibility: hidden; /* Cache le bouton par défaut */
+        }
+        .form-group input[type="file"]::before {
+            content: 'Choisir un fichier...'; /* Texte personnalisé pour le bouton */
+            display: inline-block;
+            background: #007FFF;
+            color: white;
+            border-radius: 5px;
+            padding: 10px 15px;
+            outline: none;
+            white-space: nowrap;
+            -webkit-user-select: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            margin-right: 10px;
+        }
+        .form-group input[type="file"]:hover::before {
+            background: #0056b3;
+        }
+        .form-group input[type="file"]:hover {
+             background-color: #dbeeff;
+        }
+        /* Pour afficher le nom du fichier sélectionné */
+        .form-group input[type="file"]::after {
+            content: attr(data-file-name); /* Affichera le nom du fichier via JS */
+            color: #555;
+            font-style: italic;
+        }
+
+
+        .upload-btn {
+            background: linear-gradient(45deg, #28a745, #218838); /* Dégradé de vert */
+            color: white;
+            padding: 15px 30px; /* Plus grand */
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3); /* Ombre pour le bouton */
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px); /* Léger soulèvement */
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .status-message {
+            margin-top: 25px; /* Marge augmentée */
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 15px;
+            text-align: center;
+            opacity: 0; /* Caché initiallement */
+            transition: opacity 0.5s ease;
+        }
+
+        .status-message.visible {
+            opacity: 1; /* Visible quand actif */
+        }
+
+        .error-message {
+            color: #a72828;
+            background-color: #ffe0e0;
+            border: 1px solid #ffc2c2;
+        }
+
+        .success-message {
+            color: #218838;
+            background-color: #e0ffe0;
+            border: 1px solid #c2ffc2;
+        }
+
+        /* Icônes de préfixe dans les inputs (si Font Awesome est lié) */
+        /*
+        .form-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 18px;
+        }
+        .form-group input, .form-group select {
+            padding-left: 45px; // Ajustez le padding pour l'icône
+        }
+        */
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+            .admin-main-content {
+                padding: 20px;
+            }
+            .upload-section {
+                padding: 25px;
+                max-width: 95%;
+            }
+            .upload-section h2 {
+                font-size: 24px;
+            }
+            .upload-btn {
+                padding: 12px 20px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <div class="admin-header-left">
+            <div class="admin-logo">
+                <img src="images/logo-cnss.png" alt="Logo CNSS">
+            </div>
+            <h1 class="admin-title">Panel Administrateur - Archives</h1>
+        </div>
+        <button class="admin-logout-btn" onclick="adminLogout()">Déconnexion</button>
+    </div>
+
+    <div class="admin-main-content">
+        <div class="upload-section">
+            <h2>Télécharger un Nouveau Document</h2>
+            <form id="uploadForm">
+                <div class="form-group">
+                    <label for="documentTitle">Titre du Document :</label>
+                    <input type="text" id="documentTitle" name="documentTitle" placeholder="Ex: Rapport Annuel 2024" required>
+                </div>
+                <div class="form-group">
+                    <label for="documentService">Service Associé :</label>
+                    <select id="documentService" name="documentService" required>
+                        <option value="">-- Sélectionner un service --</option>
+                        <option value="Secrétariat">Secrétariat</option>
+                        <option value="Informatique">Informatique</option>
+                        <option value="Médical">Médical</option>
+                        <option value="Comptabilité">Comptabilité</option>
+                        <option value="Finances">Finances</option>
+                        <option value="Technique">Technique</option>
+                        <option value="Contrôle">Contrôle</option>
+                        <option value="Archives">Archives</option>
+                        <option value="Administratif">Administratif</option>
+                        <option value="Employeurs et Salariés">Employeurs et Salariés</option>
+                        <option value="Prestations/Famille">Prestations/Famille</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="documentFile">Fichier du Document (PDF, DOCX, Images, etc.) :</label>
+                    <input type="file" id="documentFile" name="documentFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" required data-file-name="Aucun fichier sélectionné">
+                </div>
+                <button type="submit" class="upload-btn">Télécharger le Document</button>
+                <p id="uploadStatus" class="status-message"></p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Fonction de déconnexion pour l'administrateur
+        function adminLogout() {
+            // En production, vous enverriez une requête au serveur pour invalider la session.
+            window.location.href = 'index.html';
+        }
+
+        // Script pour l'affichage du nom de fichier
+        document.getElementById('documentFile').addEventListener('change', function(e) {
+            const fileName = e.target.files[0] ? e.target.files[0].name : 'Aucun fichier sélectionné';
+            e.target.setAttribute('data-file-name', fileName);
+        });
+
+
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const uploadStatus = document.getElementById('uploadStatus');
+            uploadStatus.className = 'status-message'; // Réinitialiser les classes de statut
+            uploadStatus.classList.remove('visible'); // Cacher le message
+
+            const documentTitle = document.getElementById('documentTitle').value;
+            const documentService = document.getElementById('documentService').value;
+            const documentFile = document.getElementById('documentFile').files[0];
+
+            if (!documentTitle || !documentService || !documentFile) {
+                uploadStatus.textContent = 'Veuillez remplir tous les champs.';
+                uploadStatus.classList.add('error-message', 'visible');
+                return;
+            }
+
+            // --- TRÈS IMPORTANT : SIMULATION DE L'UPLOAD CÔTÉ CLIENT ---
+            // EN RÉALITÉ, CE CODE ENVERRAIT LE FICHIER À UN SERVEUR BACKEND VIA UNE REQUÊTE FETCH.
+            
+            uploadStatus.textContent = 'Téléchargement en cours...';
+            uploadStatus.classList.add('success-message', 'visible'); 
+
+            // Simuler un délai d'upload
+            setTimeout(() => {
+                uploadStatus.textContent = `"${documentFile.name}" téléchargé pour le service "${documentService}" (simulation).`;
+                uploadStatus.classList.remove('error-message');
+                uploadStatus.classList.add('success-message');
+                document.getElementById('uploadForm').reset(); // Réinitialise le formulaire
+                document.getElementById('documentFile').setAttribute('data-file-name', 'Aucun fichier sélectionné'); // Réinitialise le nom du fichier affiché
+            }, 2000); // 2 secondes de délai simulé
+
+            /*
+            // Exemple (COMMENTÉ) de ce que vous feriez avec un backend (Node.js, Python, PHP, etc.)
+            const formData = new FormData();
+            formData.append('title', documentTitle);
+            formData.append('service', documentService);
+            formData.append('document', documentFile);
+
+            fetch('/api/upload-document', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    uploadStatus.textContent = 'Document téléchargé avec succès !';
+                    uploadStatus.classList.remove('error-message');
+                    uploadStatus.classList.add('success-message', 'visible');
+                    document.getElementById('uploadForm').reset();
+                    document.getElementById('documentFile').setAttribute('data-file-name', 'Aucun fichier sélectionné');
+                } else {
+                    uploadStatus.textContent = data.message || 'Échec du téléchargement du document.';
+                    uploadStatus.classList.remove('success-message');
+                    uploadStatus.classList.add('error-message', 'visible');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors du téléchargement:', error);
+                uploadStatus.textContent = 'Une erreur réseau est survenue. Veuillez réessayer.';
+                uploadStatus.classList.remove('success-message');
+                uploadStatus.classList.add('error-message', 'visible');
+            });
+            */
+        });
+    </script>
+</body>
+</html>
